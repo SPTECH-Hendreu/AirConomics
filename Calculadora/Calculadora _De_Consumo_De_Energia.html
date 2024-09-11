@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AirConomics</title>
+</head>
+<body>
+
+    <h1>Calculadora de consumo de energia mensal da <b style="color: rgb(0, 128, 255);">AIR</b>conomics</h1>
+    
+    INSERIR QUANTIDADE DE APARELHOS:
+    <input type="number" id="input_ap"><br>
+<br>
+    INSERIR HORAS DE USO DO APARELHO:
+    <input type="number" id="input_horas"><br>
+<br>
+    INSERIR POTENCIA DO APARELHO EM WATTS:
+    <input type="number" id="input_watts"><br>
+<br>
+    QUEM É SUA PROVEDORA DE ENERGIA?:<button onclick="cpfl()">cpfl</button><button onclick="enel()">enel</button><br>
+<br>
+    CASO A SUA PROVEDORA SEJA OUTRA COLOCAR TAXA:
+    <input type="text" id="input_taxa"><br>
+<br>
+    CALCULO COM NOSSO PRODUTO INSTALADO?:<button onclick="sim()">Sim</button><button onclick="nao()">Não</button><br>
+<br>
+    <button onclick="calcular()">Ver consumo de energia</button><br>
+<br>
+    <div id="div_men"></div>
+
+</body>
+</html>
+<script>
+
+    var taxa = Number(input_taxa.value)
+    var empresa = Number(0)
+    var projeto = Number(0)    
+    
+    function sim(){
+        projeto = "sim"
+    }
+    function nao(){
+        projeto = "não"
+    }
+    function cpfl(){
+        empresa = "cpfl"
+    }
+    function enel(){
+        empresa = "enel"
+    }
+    
+    function calcular(){ 
+        
+        var enel = 0.656
+        var cpfl = 0.690
+        var consumo = (Number(input_horas.value) * Number(input_watts.value) / 1000) * 30 * Number(input_ap.value)
+        var eco_consumo = consumo * 0.8
+        var hora = Number(input_horas.value)
+        var hora_mensal = hora * 30 * Number(input_ap.value)
+
+        if(projeto == "sim"){ 
+
+            if(input_taxa.value == ""){
+
+                if(empresa == "enel" ){
+                
+                var pago_enel = consumo * enel
+                var eco_pago_enel = pago_enel * 0.8
+                
+                div_men.innerHTML = `<h3><i>Com o cosnumo de ${consumo} whatts, sendo utilizado em ${input_ap.value} equipamentos, durante ${hora_mensal} horas por més.
+                    <br>
+                     Seu consumo mensal de energia com o nosso produto adicionando a taxa da enel, você consome <b style=color:green;>${eco_consumo}Kwh</b> e com isso voce irá pagar <b style=color:green;>R$${eco_pago_enel}</b></i></h3>`
+                
+                } else {
+                
+                var pago_cpfl = consumo * cpfl
+                var eco_pago_cpfl = pago_cpfl * 0.8
+
+                div_men.innerHTML = `<h3><i>Com o cosnumo de ${consumo} whatts, sendo utilizado em ${input_ap.value} equipamentos, durante ${hora_mensal} horas por més.
+                    <br>
+                    Seu consumo mensal de energia com o nosso produto adicionando a taxa da CPFL, você consome <b style=color:green;>${eco_consumo}Kwh</b> e com isso voce irá pagar <b style=color:green;>R$${eco_pago_cpfl}</b></i></h3>`
+
+                }
+            } else {
+
+                var taxa_pago = consumo * Number(input_taxa.value)
+                var eco_pago_taxa = taxa_pago * 0.8
+
+                div_men.innerHTML = `<h3><i>Com o cosnumo de ${consumo} whatts, sendo utilizado em ${input_ap.value} equipamentos, durante ${hora_mensal} horas por més.
+                    <br>
+                    Seu consumo mensal de energia com o nosso produto adicionando a taxa da CPFL, você consome <b style=color:green;>${eco_consumo}Kwh</b> e com isso voce irá pagar <b style=color:green;>R$${eco_pago_taxa}</b></i></h3>`
+            }
+
+        } if(projeto == "não") {
+            
+            if(input_taxa.value == ""){
+            
+                if(empresa == "enel"){
+                
+                var pago_enel = consumo * enel
+
+                div_men.innerHTML = `<h3><i>Com o cosnumo de ${consumo} whatts, sendo utilizado em ${input_ap.value} equipamentos, durante ${hora_mensal} horas por més.
+                    <br>
+                    Seu consumo mensal de energia sem o nosso produto é <b style=color:red;>${consumo}Kwh</b> e você paga <b style=color:red;>R$${pago_enel}</b> por més nisto.</i></h3>`
+                
+                } else {
+                
+                var pago_cpfl = consumo * cpfl
+                
+                div_men.innerHTML = `<h3><i>Com o cosnumo de ${consumo} whatts, sendo utilizado em ${input_ap.value} equipamentos, durante ${hora_mensal} horas por més.
+                    <br>
+                    Seu consumo mensal de energia sem o nosso produto é <b style=color:red;>${consumo}Kwh</b> e você paga <b style=color:red;>R$${pago_cpfl}</b> por més nisto.</i></h3>`
+
+                }
+            } else {
+
+                var taxa_pago = consumo * Number(input_taxa.value)
+
+                div_men.innerHTML =  `<h3><i>Com o cosnumo de ${consumo} whatts, sendo utilizado em ${input_ap.value} equipamentos, durante ${hora_mensal} horas por més.
+                    <br>
+                    Seu consumo mensal de energia sem o nosso produto é <b style=color:red;>${consumo}Kwh</b> e você paga <b style=color:red;>R$${taxa_pago}</b> por més nisto.</i></h3>`
+            }
+        }
+    }
+
+</script>
